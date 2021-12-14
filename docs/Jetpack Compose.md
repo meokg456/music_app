@@ -77,5 +77,137 @@ And when the user interacts with the UI, UI raises events such as `onClick`. Tho
 
 - In some cases, the next state need the current state data to render. So we need to store that data for the next use.
 
-## *How state work?*
+## *How to manage state?*
+
+### **State in composables**
+
+- Composable functions can store a single object in memory by using the `remember` composable. 
+
+- mutableStateOf creates an observable MutableState<T>
+
+- There are three ways to declare a MutableState object in a composable:
+```kotlin
+    - val mutableState = remember { mutableStateOf(default) }
+    - var value by remember { mutableStateOf(default) }
+    - val (value, setValue) = remember { mutableStateOf(default) }
+```
+### **Other supported type of state**
+
+Jetpack Compose doesn't require that you use MutableState<T> to hold state. We also can use other supported type of state:
+- LiveData
+- Flow
+- RxJava2
+
+### **State hoisting**
+
+- In short, move the event that will change the composable state to the parameter to make stateful become stateless.
+
+### **Restore state in Compose**
+
+- Use `rememberSaveable` to restore your UI state after an activity or process is recreated.
+
+**Parcelize**
+
+```kotlin
+@Parcelize
+data class City(val name: String, val country: String) : Parcelable
+
+@Composable
+fun CityScreen() {
+    var selectedCity = rememberSaveable {
+        mutableStateOf(City("Madrid", "Spain"))
+    }
+}
+```
+
+**MapSaver**
+
+```kotlin
+data class City(val name: String, val country: String)
+
+val CitySaver = run {
+    val nameKey = "Name"
+    val countryKey = "Country"
+    mapSaver(
+        save = { mapOf(nameKey to it.name, countryKey to it.country) },
+        restore = { City(it[nameKey] as String, it[countryKey] as String) }
+    )
+}
+
+@Composable
+fun CityScreen() {
+    var selectedCity = rememberSaveable(stateSaver = CitySaver) {
+        mutableStateOf(City("Madrid", "Spain"))
+    }
+}
+```
+
+**ListSaver**
+```kotlin
+data class City(val name: String, val country: String)
+
+val CitySaver = run {
+    val nameKey = "Name"
+    val countryKey = "Country"
+    mapSaver(
+        save = { mapOf(nameKey to it.name, countryKey to it.country) },
+        restore = { City(it[nameKey] as String, it[countryKey] as String) }
+    )
+}
+
+@Composable
+fun CityScreen() {
+    var selectedCity = rememberSaveable(stateSaver = CitySaver) {
+        mutableStateOf(City("Madrid", "Spain"))
+    }
+}
+```
+
+### **Managing state in Compose**
+
+- Composables for simple UI element state management.
+
+- State holders for complex UI element state management. They own UI elements' state and UI logic.
+
+![](https://developer.android.com/images/jetpack/compose/state-dependencies.svg)
+
+**Types of state and logic**
+
+States:
+
+- **UI element state** is the hoisted state of UI elements.
+
+- **Screen or UI state** is what needs to be displayed on the screen.
+
+logic:
+
+- **UI behavior logic or UI logic** is related to how to display state changes on the screen.
+
+- **Business logic** is what to do with state changes.
+
+### **Composables as source of truth**
+
+- Having UI logic and UI elements state in composables is a good approach if the state and logic is simple.
+
+```kotlin
+@Composable
+fun MyApp() {
+    MyTheme {
+        val scaffoldState = rememberScaffoldState()
+        val coroutineScope = rememberCoroutineScope()
+
+        Scaffold(scaffoldState = scaffoldState) {
+            MyContent(
+                showSnackbar = { message ->
+                    coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(message)
+                    }
+                }
+            )
+        }
+    }
+}
+```
+
+### **State holders as source of truth**
 
