@@ -54,3 +54,61 @@ if (applicationContext.packageManager.hasSystemFeature(
     // Gracefully degrade your app experience.
 }
 ```
+
+### **Request permissions**
+Request permission code snippets:
+```kotlin
+when {
+    ContextCompat.checkSelfPermission(
+            CONTEXT,
+            Manifest.permission.REQUESTED_PERMISSION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+        // You can use the API that requires the permission.
+        performAction(...)
+    }
+    shouldShowRequestPermissionRationale(...) -> {
+        // In an educational UI, explain to the user why your app requires this
+        // permission for a specific feature to behave as expected. In this UI,
+        // include a "cancel" or "no thanks" button that allows the user to
+        // continue using your app without granting the permission.
+        showInContextUI(...)
+    }
+    else -> {
+        // You can directly ask for the permission.
+        requestPermissions(CONTEXT,
+                arrayOf(Manifest.permission.REQUESTED_PERMISSION),
+                REQUEST_CODE)
+    }
+}
+
+```
+Handle permission request results:
+
+```kotlin
+override fun onRequestPermissionsResult(requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray) {
+    when (requestCode) {
+        PERMISSION_REQUEST_CODE -> {
+            // If request is cancelled, the result arrays are empty.
+            if ((grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Permission is granted. Continue the action or workflow
+                // in your app.
+            } else {
+                // Explain to the user that the feature is unavailable because
+                // the features requires a permission that the user has denied.
+                // At the same time, respect the user's decision. Don't link to
+                // system settings in an effort to convince the user to change
+                // their decision.
+            }
+            return
+        }
+
+        // Add other 'when' lines to check for other
+        // permissions this app might request.
+        else -> {
+            // Ignore all other requests.
+        }
+    }
+}
+```
