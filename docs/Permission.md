@@ -19,6 +19,8 @@
 
 ## Declaring permissions
 
+![](https://developer.android.com/images/training/permissions/workflow-runtime.svg)
+
 ### **Declaring permissions might need to request**
 
 ```xml
