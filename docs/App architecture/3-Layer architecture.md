@@ -1,3 +1,5 @@
+![](https://www.codeproject.com/KB/cs/Three_Layer_Architecture/3lyrs2.jpg)
+
 # Presentation layer 
 - Presentation layer is an user interface or a communication layer of the application where allows user or another application interact with. 
     - Ex: APIs, UI on mobile app, web apps.
