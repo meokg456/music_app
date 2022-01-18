@@ -20,6 +20,8 @@
 - This layer is constructed by repositories and data sources
 ## Repository pattern
 
+![](https://raw.githubusercontent.com/zzzprojects/learn-orm/master/tutorials/architecture/repository-pattern/images/overview-1.png)
+
 - Repository pattern is a communicator between domain layer and data source.
 
 - Repositories help us to expose data APIs. Domain layer classes will use repositories to request or modify data that it need.
