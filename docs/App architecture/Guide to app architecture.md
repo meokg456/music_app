@@ -48,7 +48,7 @@ Use case classes usually depend on repository classes, and they communicate with
 
 ![](https://developer.android.com/topic/libraries/architecture/images/mad-arch-overview-data.png)
 
-The data layer of an app contains the business logic.
+The data layer of an app contains the business logic (Simple app).
 
 The data layer is made of repositories that each can contain zero to many data sources.
 
