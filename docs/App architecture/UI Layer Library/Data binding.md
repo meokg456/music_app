@@ -80,3 +80,30 @@ val listItemBinding = ListItemBinding.inflate(layoutInflater, viewGroup, false)
 // or
 val listItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
 ```
+
+## Two-way data binding
+```xml
+<CheckBox
+    android:id="@+id/rememberMeCheckBox"
+    android:checked="@={viewmodel.rememberMe}"
+/>
+```
+Converters:
+```kotlin
+object Converter {
+    @InverseMethod("stringToDate")
+    @JvmStatic fun dateToString(
+        view: EditText, oldValue: Long,
+        value: Long
+    ): String {
+        // Converts long to String.
+    }
+
+    @JvmStatic fun stringToDate(
+        view: EditText, oldValue: String,
+        value: String
+    ): Long {
+        // Converts String to long.
+    }
+}
+```
