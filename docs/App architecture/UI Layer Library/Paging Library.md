@@ -44,6 +44,8 @@ dependencies {
 - The ViewModel layer
 - The UI layer
 
+![](https://developer.android.com/topic/libraries/architecture/images/paging3-library-architecture.svg)
+
 ## Repository layer
 
 - The primary Paging library component in the repository layer is `PagingSource`.
