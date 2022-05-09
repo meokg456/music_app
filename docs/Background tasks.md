@@ -56,16 +56,17 @@ In general, you should take any blocking tasks off the UI thread. Common long-ru
 |-|-|
 |Traditional method|Lightweight method|
 |Create new thread to execute tasks for the app|Easily run tasks in background thread|
-|Complicate to communicate with main thread and be careful with variable instance|Easier to communicate with main thead and be limit by scope|
+|Complicate to communicate with main thread|Easier to communicate with main thead and be limited by scope|
 
 ## Persistent tasks
 
-|Broadcast receiver|Alarm manager|Work manager|
-|-|-|-|
-|Android component|Deferrable task method|Persistent method|
-|Tasks running in broadcast receiver still in main thread and can run even app has been closed|`AlarmManager` give a way to perform time-based operations outside the lifetime of your application.|Work manager start persistent tasks and don't need to care about API level and play services|
-|We need to spawn a new thread to run background task|Can run tasks in specific time by set alarm to wake up device and start a broadcast receiver|![](https://miro.medium.com/max/1400/1*ExahNy8HYsdp1NCiXyeERQ.png)|
-|Hosting receiver process can be killed by system so we need to tell system to keep our receiver by using `goAsync()`|
+||Broadcast receiver|Alarm manager|Work manager|
+|-|-|-|-|
+|Definitions|Android component to listen to broadcast events|Android feature to perform work in a future time|Android feature to perform persistent tasks|
+|Characteristic|Tasks running in broadcast receiver still in main thread and can run even app has been closed|`AlarmManager` give a way to perform time-based operations outside the lifetime of your application.|Work manager start persistent tasks and don't need to care about API level and play services|
+|How to use|We need to spawn a new thread to run background task|Can run tasks in specific time by set alarm to wake up device and start a broadcast receiver|![](https://miro.medium.com/max/1400/1*ExahNy8HYsdp1NCiXyeERQ.png)|
+|Attentions|Hosting receiver process can be killed by system so we need to tell system to keep our receiver by using `goAsync()`|System will collect nearing inexact jobs to involve at a same time to save power|Work manager use JobScheduler, GcmNetworkManager, AlarmManager and broadcast receivers under the hood
+|When to use|Use in API 14-22 to perform persistent tasks|Use with broadcast receivers to perform deferrable tasks|Can be use in any API level and play services conditions|
 
 
 ## Foreground services
